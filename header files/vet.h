@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <string_view>
 
 
 class Vet
@@ -11,10 +12,10 @@ private:
     std::string speciality;
 public:
     Vet();
-    Vet(const std::string& name, const std::string& speciality);
+    Vet(std::string_view nameTemp, std::string_view specialityTemp);
 
-    void setName(const std::string& name);
-    void setSpeciality(const std::string& speciality);
+    void setName(std::string_view nameTemp);
+    void setSpeciality(std::string_view specialityTemp);
 
     std::string getName() const;
     std::string getSpeciality() const;
