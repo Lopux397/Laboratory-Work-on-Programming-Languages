@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <string>
+#include <string_view>
 
 class Appeals
 {
@@ -16,13 +17,13 @@ private:
     std::string treatment;
 public:
     Appeals();
-    Appeals(const Vet& vet, const Animal& animal, const std::string& date, const std::string& diagnosis, const std::string& treatment);
+    Appeals(const Vet& vetTemp, const Animal& animalTemp, std::string_view dateTemp, std::string_view diagnosisTemp, std::string_view treatmentTemp);
 
-    void setVet(const Vet& vet);
-    void setAnimal(const Animal& animal);
-    void setDate(const std::string& date);
-    void setDiagnosis(const std::string& diagnosis);
-    void setTreatment(const std::string& treatment);
+    void setVet(const Vet& vetTemp);
+    void setAnimal(const Animal& animalTemp);
+    void setDate(std::string_view dateTemp);
+    void setDiagnosis(std::string_view diagnosisTemp);
+    void setTreatment(std::string_view treatmentTemp);
 
     Vet getVet() const;
     Animal getAnimal() const;
