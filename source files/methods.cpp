@@ -4,20 +4,14 @@
 #include "vetClinic.h"
 
 Animal::Animal() = default;
-Animal::Animal(const std::string& name, const std::string& view, const std::string& breed, unsigned int age, const std::string& owner)
-{
-    this->name = name;
-    this->view = view;
-    this->breed = breed;
-    this->age = age;
-    this->owner = owner;
-}
+Animal::Animal(std::string_view nameTemp, std::string_view viewTemp, std::string_view breedTemp, unsigned int ageTemp, std::string_view ownerTemp)
+: name(nameTemp), view(viewTemp), breed(breedTemp), age(ageTemp), owner(ownerTemp) {}
 
-void Animal::setName(const  std::string& name) { this->name = name; }
-void Animal::setView(const std::string& view) { this->view = view; }
-void Animal::setBreed(const std::string& breed) { this->breed = breed; }
-void Animal::setAge(unsigned int age) { this->age = age; }
-void Animal::setOwner(const std::string& owner) { this->owner = owner; }
+void Animal::setName(std::string_view nameTemp) { name = nameTemp; }
+void Animal::setView(std::string_view viewTemp) { view = viewTemp; }
+void Animal::setBreed(std::string_view breedTemp) { breed = breedTemp; }
+void Animal::setAge(unsigned int ageTemp) { age = ageTemp; }
+void Animal::setOwner(std::string_view ownerTemp) { owner = ownerTemp; }
 
 std::string Animal::getName() const { return name; }
 std::string Animal::getView() const { return view; }
@@ -32,14 +26,11 @@ void Animal::info() const
 
 
 Vet::Vet() = default;
-Vet::Vet(const std::string& name, const std::string& speciality) 
-{
-    this->name = name;
-    this->speciality = speciality;
-}
+Vet::Vet(std::string_view nameTemp, std::string_view specialityTemp)
+: name(nameTemp), speciality(specialityTemp) {}
 
-void Vet::setName(const std::string& name) { this->name = name; }
-void Vet::setSpeciality(const std::string& speciality) { this->speciality = speciality; }
+void Vet::setName(std::string_view nameTemp) { name = nameTemp; }
+void Vet::setSpeciality(std::string_view specialityTemp) { speciality = specialityTemp; }
 
 std::string Vet::getName() const { return name; }
 std::string Vet::getSpeciality() const { return speciality; }
@@ -51,20 +42,14 @@ void Vet::info() const
 
 
 Appeals::Appeals() = default;
-Appeals::Appeals(const Vet& vet, const Animal& animal, const std::string& date, const std::string& diagnosis, const std::string& treatment)
-{
-    this->vet = vet;
-    this->animal = animal;
-    this->date = date;
-    this->diagnosis = diagnosis;
-    this->treatment = treatment;
-}
+Appeals::Appeals(const Vet& vetTemp, const Animal& animalTemp, std::string_view dateTemp, std::string_view diagnosisTemp, std::string_view treatmentTemp)
+: vet(vetTemp), animal(animalTemp), date(dateTemp), diagnosis(diagnosisTemp), treatment(treatmentTemp) {}
 
-void Appeals::setVet(const Vet& vet) { this->vet = vet; }
-void Appeals::setAnimal(const Animal& animal) { this->animal = animal; }
-void Appeals::setDate(const std::string& date) { this->date = date; }
-void Appeals::setDiagnosis(const std::string& diagnosis) { this->diagnosis = diagnosis; }
-void Appeals::setTreatment(const std::string& treatment) { this->treatment = treatment; }
+void Appeals::setVet(const Vet& vetTemp) { vet = vetTemp; }
+void Appeals::setAnimal(const Animal& animalTemp) { animal = animalTemp; }
+void Appeals::setDate(std::string_view dateTemp) { date = dateTemp; }
+void Appeals::setDiagnosis(std::string_view diagnosisTemp) { diagnosis = diagnosisTemp; }
+void Appeals::setTreatment(std::string_view treatmentTemp) { treatment = treatmentTemp; }
 
 Vet Appeals::getVet() const { return vet; }
 Animal Appeals::getAnimal() const { return animal; }
@@ -82,15 +67,9 @@ void Appeals::info() const
 }
 
 
-VetClinic::VetClinic() : animal(nullptr), animalSize(0), vet(nullptr), vetSize(0), appeals(nullptr), appealsSize(0) {}
-VetClinic::~VetClinic() 
-{
-    delete[] animal;
-    delete[] vet;
-    delete[] appeals;
-}
+VetClinic::VetClinic() = default;
 
-bool VetClinic::appointmentCheck(const std::string& vetSpeciality, const std::string& viewAnimal) 
+bool VetClinic::appointmentCheck(std::string_view vetSpeciality, std::string_view viewAnimal) const
 {
     if (vetSpeciality == "Орнитолог" && viewAnimal != "Птица") return false;
     if (vetSpeciality == "Ратолог" && viewAnimal != "Грызун") return false;
@@ -99,45 +78,28 @@ bool VetClinic::appointmentCheck(const std::string& vetSpeciality, const std::st
     return true;
 }
 
-void VetClinic::setAnimal(const Animal& animal)
+void VetClinic::setAnimal(const Animal& animalTemp)
 {
-    Animal* temp = new Animal[animalSize + 1];
-
-    for (int i = 0; i < animalSize; i++) 
-        temp[i] = this->animal[i];
-
-    temp[animalSize++] = animal;
-
-    delete[] this->animal;
-    
-    this->animal = temp;
+    animal.push_back(animalTemp);
 }
 
-void VetClinic::setVet(const Vet& vet)
+void VetClinic::setVet(const Vet& vetTemp)
 {
-   Vet* temp = new Vet[vetSize + 1];
-
-    for (int i = 0; i < vetSize; i++)
-        temp[i] = this->vet[i];
-
-    temp[vetSize++] = vet;
-
-    delete[] this->vet;
-
-    this->vet = temp;
+    vet.push_back(vetTemp);
 }
 
-bool VetClinic::setAppeals(const std::string& vetSpeciality, const std::string& nameAnimal, const std::string& date, const std::string& diagnosis, const std::string& treatment)
+bool VetClinic::setAppeals(std::string_view vetSpeciality, std::string_view nameAnimal, std::string_view date, const std::string_view diagnosis, std::string_view treatment)
 {
     const Vet* addsDoc = nullptr;
-    for (int i = 0; i < vetSize; i++)
+    for (const auto& currentVet : vet)
     {
-        if (vet[i].getSpeciality() == vetSpeciality)
+        if (currentVet.getSpeciality() == vetSpeciality)
         {
-            addsDoc = &vet[i];
+            addsDoc = &currentVet;
             break;
         }
     }
+        
     if (!addsDoc)
     {
         std::cout<< "Vet not found" << std::endl;
@@ -145,13 +107,14 @@ bool VetClinic::setAppeals(const std::string& vetSpeciality, const std::string& 
     }
 
     const Animal* addsAnimal = nullptr;
-    for (int i = 0; i < animalSize; i++)
+    for (const auto& currentAnimal : animal) 
     {
-        if (animal[i].getName() == nameAnimal) {
-            addsAnimal = &animal[i];
+        if (currentAnimal.getName() == nameAnimal) {
+            addsAnimal = &currentAnimal;
             break;
         }
     }
+
     if (!addsAnimal) 
     {
         std::cout << "Animal not found" << std::endl;
@@ -164,23 +127,14 @@ bool VetClinic::setAppeals(const std::string& vetSpeciality, const std::string& 
         return false;
     }
 
-    Appeals* temp = new Appeals[appealsSize + 1];
-
-    for (int i = 0; i < appealsSize; i++)
-        temp[i] = appeals[i];
-
-    temp[appealsSize++] = Appeals(*addsDoc, *addsAnimal, date, diagnosis, treatment);
-
-    delete[] appeals;
-
-    appeals = temp;
-
+    appeals.emplace_back(Appeals(*addsDoc, *addsAnimal, date, diagnosis, treatment));
+    
     return true;
 }
 
 void VetClinic::infoAnimal() const
 {
-    for (int i = 0; i < animalSize; i++) 
+    for (int i = 0; i < animal.size(); i++) 
     {
         std::cout << "========= Animal[" << i + 1 << "] =========" << std::endl;
         animal[i].info();
@@ -190,7 +144,7 @@ void VetClinic::infoAnimal() const
 
 void VetClinic::infoVet() const 
 {
-    for (int i = 0; i < vetSize; i++)
+    for (int i = 0; i < vet.size(); i++)
     {
         std::cout << "========= Vet[" << i + 1 << "] =========" << std::endl;
         vet[i].info();
@@ -200,7 +154,7 @@ void VetClinic::infoVet() const
 
 void VetClinic::infoAppeals() const 
 {
-    for (int i = 0; i < appealsSize; i++)
+    for (int i = 0; i < appeals.size(); i++)
     {
         std::cout << "========= Appeals[" << i + 1 << "] =========" << std::endl;
         appeals[i].info();

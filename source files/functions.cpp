@@ -32,7 +32,8 @@ void menu(VetClinic& clinic, bool& end)
         switch (option) {
         case 1:
         {
-            std::string fullName, speciality;
+            std::string fullName; 
+            std::string speciality;
 
             std::cout << "Enter the veterinarian's full name: ";
             std::getline(std::cin, fullName);
@@ -46,7 +47,10 @@ void menu(VetClinic& clinic, bool& end)
         }
         case 2:
         {
-            std::string name, view, breed, owner;
+            std::string name; 
+            std::string view; 
+            std::string breed; 
+            std::string owner;
             unsigned int age;
 
             std::cout << "Enter the animal's name: ";
@@ -72,7 +76,11 @@ void menu(VetClinic& clinic, bool& end)
         case 3:
         {
 
-            std::string vetSpeciality, nameAnimal, date, diagnosis, treatment;
+            std::string vetSpeciality;
+            std::string nameAnimal;
+            std::string date;
+            std::string diagnosis;
+            std::string treatment;
 
             std::cout << "Enter the vet's specialization: ";
             std::getline(std::cin, vetSpeciality);

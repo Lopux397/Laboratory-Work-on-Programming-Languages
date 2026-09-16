@@ -4,7 +4,7 @@
 #include "vetClinic.h"
 #include "functions.h"
 
-#include <windows.h>
+#include <Windows.h>
 
 int main()
 {

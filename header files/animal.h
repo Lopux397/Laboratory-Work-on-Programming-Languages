@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <string_view>
 
 class Animal
 {
@@ -13,13 +14,13 @@ private:
     std::string owner;
 public:
     Animal();
-    Animal(const std::string& name, const std::string& view, const std::string& breed, unsigned int age, const std::string& owner);
+    Animal(std::string_view nameTemp, std::string_view viewTemp, std::string_view breedTemp, unsigned int ageTemp, std::string_view ownerTemp);
     
-    void setName(const std::string& name);
-    void setView(const std::string& view);
-    void setBreed(const std::string& breed);
-    void setAge(const unsigned int age);
-    void setOwner(const std::string& owner);
+    void setName(std::string_view nameTemp);
+    void setView(std::string_view viewTemp);
+    void setBreed(std::string_view breedTemp);
+    void setAge(const unsigned int ageTemp);
+    void setOwner(std::string_view ownerTemp);
 
     std::string getName() const;
     std::string getView() const;
